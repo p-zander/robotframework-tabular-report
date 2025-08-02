@@ -1,6 +1,6 @@
 # Robot Framework Tabular Report
 
-[![Build Status](https://img.shields.io/github/workflow/status/p-zander/robotframework-tabular-report/CI)](https://github.com/p-zander/robotframework-tabular-report/actions)
+[![Upload Python Package](https://github.com/p-zander/robotframework-tabular-report/actions/workflows/python-publish.yml/badge.svg)](https://github.com/p-zander/robotframework-tabular-report/actions/workflows/python-publish.yml)
 
 ## Overview
 
