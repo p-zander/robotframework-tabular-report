@@ -26,7 +26,7 @@ class CsvWriter(BaseWriter):
     def __del__(self, *_) -> None:
         if hasattr(self, "file") and self.file:
             self.file.close()
-            super().print_success(self.file.name)
+            self.print_success(self.file.name)
 
     def write_data(self, data: List[str]) -> None:
         row: List[str] = [" ".join(entry.replace(linesep, " ").split()) for entry in data]

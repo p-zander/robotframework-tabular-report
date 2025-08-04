@@ -46,7 +46,7 @@ class XlsWriter(BaseWriter):
             if self.colored_status and not self.colored_rows:
                 self.add_conditional_formatting(self.status_index)
             self.file.close()
-            super().print_success(self.file.filename)
+            self.print_success(self.file.filename)
 
     def write_header(self, data: List[str]):
         self.write_data(data)

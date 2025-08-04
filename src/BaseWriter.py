@@ -53,6 +53,8 @@ class BaseWriter(SuiteVisitor, ABC):
                 case "parent.metadata":
                     meta = str([list(test.parent.metadata.items())])
                     value = "" if meta == "[[]]" else meta[1:-2]
+                case "parent.all_tests":
+                    value = str([t.name for t in test.parent.all_tests])
                 case i if "parent" in i:
                     value = getattr(test.parent, i.split(".")[1])
                 case "doc":
@@ -75,18 +77,31 @@ class BaseWriter(SuiteVisitor, ABC):
         self.write_header(data)
 
     def __pretty_name(self, specifier: str) -> str:
-        my_pretty_dict = {
-            "doc": "Documentation",
-            "elapsedtime": "Elapsed Time",
-            "endtime": "End Time",
-            "lineno": "Line",
-            "name": "Test Name",
-            "parent.metadata": "Suite Metadata",
-            "parent.name": "Suite Name",
-            "starttime": "Start Time",
+        # 1st case (special case): We have an exact replacement for this specifier set up
+        special_exact_replace = {
+            "lineno": "line",
+            "name": "test name",
+            "tags": "test tags",
+            "setup": "test setup",
+            "teardown": "test teardown",
+            "body": "test body",
+            "timeout": "timeout" # to prevent 2nd case
         }
-        default_pretty_name = specifier.replace("_", " ").replace(".", " ").title()
-        return my_pretty_dict.get(specifier, default_pretty_name)
+        if specifier in special_exact_replace:
+            return special_exact_replace[specifier].title()
+        
+        # 2nd case: We do dome generic replacements to make the specifier as pretty as possible
+        always_replace = {
+            "_": " ",
+            ".": " ",
+            "parent": "suite",
+            "doc": "documentation",
+            "time": " time",
+        }
+        default_pretty_name = specifier
+        for word,sub in always_replace.items():
+            default_pretty_name = default_pretty_name.replace(word, sub)
+        return default_pretty_name.title()
 
     def print_success(self, filename: str):
         filepath = path.abspath(path.join(path.curdir, filename))

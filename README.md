@@ -4,7 +4,7 @@
 
 ## Overview
 
-**Robot Framework Tabular Report** is an extension for Robot Framework that generates tabular test reports for easier overview and to make them more accessible. The report can be converted into various formats, currently CSV and Excel.
+**Robot Framework Tabular Report** is a small extension for Robot Framework that generates tabular test reports alongside the regular output files, for easier overview and to make them more accessible. The tabular test report can be generated in different formats, currently CSV and Excel.
 
 ## Features
 
@@ -24,7 +24,7 @@ pip install robotframework-tabular-report
 
 ### Basic Example
 
-The Writers provided by this library can easily be utilized using the `--prerebotmodifier` option (see [here](https://robotframework.org/robotframework//latest/RobotFrameworkUserGuide.html#programmatic-modification-of-results)) either directly during the test execution
+The Writers provided by this library can easily be utilized using the `--prerebotmodifier` option (see ["3.6.9   Programmatic modification of results"](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#programmatic-modification-of-results) in Documentation) either directly during the test execution
 
 ```bash
 robot --prerebotmodifier CsvWriter:myfile my_tests
@@ -57,23 +57,23 @@ Additionally this Writer support the following arguments:
 - `colored_status`: Use conditional formatting to color red/green in test status column (Truthy/Falsy, default: `True`)
 - `colored_rows`: Color complete test case row read/green depending on test status (Truthy/Falsy, default: `False`)
 
+Note: The formatting based on test status is only supported, when the `status` field is present in the output.$
+
 ### Details
 
-Note: The formatting based on test status is only supported, when the `status` field is present in the output.
-
-The arguments need to be provided in order, following the Modifier name and separated by `:`, all parameters other then the filename are optional. An argument setting can be skipped (empty assignment, i.e. `::`), when needing to set a latter parameter.
+The arguments need to be provided in order, following the modifier name and separated by `:`, all parameters other then the filename are optional. When needing to set a letter parameter, whil leaving a earlier on at its default value the value can be skipped (empty assignment, i.e. `::`).
 
 **Example:**
 ```
 robot --prerebotmodifier CsvWriter:myfile:name,status,parent.metadata,tags::TAB my_tests
 ```
-This would create a Tab-separated file ``myfile.csv``, with the provided fields and the default Doc length.
+This would create a Tab-separated file ``myfile.csv``, with the provided fields and the default doc length.
 
 **Example 2:**
 ```
 robot --prerebotmodifier XlsWriter:workbook::::Yes my_tests
 ```
-This would create a Excel file ``workbook.xlsx``, with the default fields and formatting (red/green) applied to each test depending on the test status.
+This would create a Excel file ``workbook.xlsx``, with the default fields and formatting (red/green) applied to each row depending on the test status.
 
 ## Format Specifiers
 
@@ -116,9 +116,9 @@ The **Default format** would be equivalent to the following specifier:
 When using the special value `LONG` for the `format_specifier` argument, this library provides another pre-configured format, which is equivalent to:
 ```id,parent.name,name,parent.metadata,doc,tags,status,message,elapsedtime,starttime,endtime,timeout,source,lineno```
 
-Limited testing was done on all the other fields seen here. Your kilometerage may vary.
+Just did some quick testing on all other parameters listed here and found no issues. With members that aren't not listed your kilometerage may vary. Accessing grandparent members is not possible currently.
 
-Examples files can be found here ([myfile.csv](test/myfile.csv) and [myfile.xlsx](test/myfile.xlsx)) as well as my basis for testing.
+Examples files as well as my basis for testing can be found in the `test` folder.
 
 ## Contact
 
